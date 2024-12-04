@@ -20,8 +20,8 @@ void sender() {
 			{
 				std::lock_guard<std::mutex> lock(mtx);
 				messages.push("exit");
+				conVar.notify_one();
 			}
-			conVar.notify_one();
 			break;
 		}
 		else {
@@ -30,8 +30,9 @@ void sender() {
 				messages.push(message);
 				std::cout << "Sent message: " << message << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(500));
+				conVar.notify_one();
 			}
-			conVar.notify_one();
+			
 		}
 	}
 }
